@@ -30,5 +30,14 @@ button.on("click",function(){
     console.log(tableData);
     var filteredData=tableData.filter(sighting => sighting.datetime === inputValue);
     console.log(filteredData);
+    
+    tbody.html("");
+    tbody.append(filteredData);
+
+//resetbtn.on("click", () => {
+    //tbody.html("");
+    //populate(data)
+    //console.log("Table reset")
+
 });
 
