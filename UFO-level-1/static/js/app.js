@@ -1,43 +1,44 @@
 // from data.js
 var tableData = data;
 
+
 // YOUR CODE HERE!
 var button = d3.select("#filter-btn");
-//var inputField = d3.select("#datetime");
+
 var tbody = d3.select("tbody");
-var resetbtn = d3.select("#reset-btn");
+
 var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"]
 
 
-//console.log the weather data from data.js
-var populate=(aliendata)=>{
-
-
-    data.forEach(ufo_sightings =>{
-     var row=tbody.append("tr");
-     columns.forEach(column => row.append("td").text(ufo_sightings[column])
-     )
+// Update table with a new dataset
+function updateTable(dataset) {
+    tbody.html('');
+    dataset.forEach((toBeDefined) => {
+      var row = tbody.append("tr");
+      Object.entries(toBeDefined).forEach(([key,value]) => {
+        var cell = tbody.append("td");
+        cell.text(value);
+      });
     });
-}
-populate(data);
+  }
+  
+  updateTable(tableData);
 
+  // Filter date function (just compare a string)
+  function filterByDate(dataset) {
+      var filteredData = dataset.filter(function (d) {
+        return d.datetime ===  d3.select("#datetime").property("value");
+    });
+      return filteredData;
+  }
+  
+  // Start here ...
+  // First update table of original data
+  updateTable(data);
 
-
-button.on("click",function(){
-    var inputElement = d3.select("#datetime");
-    var inputValue= inputElement.property("value");
-    console.log(inputValue);
-    console.log(tableData);
-    var filteredData=tableData.filter(sighting => sighting.datetime === inputValue);
-    console.log(filteredData);
-    
-    tbody.html("");
-    tbody.append(filteredData);
-
-//resetbtn.on("click", () => {
-    //tbody.html("");
-    //populate(data)
-    //console.log("Table reset")
-
-});
-
+  button.on("click", function() {
+    // When filter is click
+    // Filter data by datetime and update the table
+    var result = filterByDate(tableData);
+    updateTable(result);
+  });
